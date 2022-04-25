@@ -38,12 +38,12 @@ function App() {
       <div className="container">
         <div className="header-container">
           <p className="header gradient-text">Staking</p>
-          <p className="sub-text">Stake your eth</p>
+          <p className="sub-text">Stake your Eth</p>
           { currentAccount === "" ? ( 
               renderNotConnectedContainer() 
             ) : (  
               <button className="cta-button connect-wallet-button">
-                Stake Eth
+                Stake
               </button>
             ) 
           }
