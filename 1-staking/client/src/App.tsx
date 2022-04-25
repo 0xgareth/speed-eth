@@ -24,12 +24,35 @@ function App() {
     }
   }  
 
-  // Render Methods
   const renderNotConnectedContainer = () => (
     <button onClick={connectWallet} className="cta-button connect-wallet-button">
       Connect to Wallet
     </button>
   );
+
+  const renderConnected = () => (
+    <div>
+      <p className='info-text'>Time remaining: </p>
+      <p className='info-text'>Total staked: 0.000/0.000</p>
+      <p className='info-text'>You staked: 0.000 eth</p>
+
+      <div className="button-container"> 
+        <button onClick={stake} className="cta-button connect-wallet-button">
+          Stake 0.5 Eth!
+        </button>
+        <button onClick={stake} className="cta-button connect-wallet-button">
+          Execute
+        </button>
+        <button onClick={stake} className="cta-button connect-wallet-button">
+          Withdraw
+        </button>
+      </div>
+    </div>
+  );
+
+  const stake = () => {};
+
+  const execute = () => {};
 
   useEffect(() => {}, []);
 
@@ -42,9 +65,7 @@ function App() {
           { currentAccount === "" ? ( 
               renderNotConnectedContainer() 
             ) : (  
-              <button className="cta-button connect-wallet-button">
-                Stake
-              </button>
+              renderConnected()
             ) 
           }
         </div>

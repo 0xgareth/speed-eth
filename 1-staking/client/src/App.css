@@ -35,6 +35,7 @@
 }
 
 .cta-button {
+  margin: 0.5em;
   height: 45px;
   border: 0;
   width: auto;
@@ -51,6 +52,16 @@
   background: -webkit-linear-gradient(left, #60c657, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.info-text {
+  color: white;
 }
 
 .footer-container {
