@@ -14,7 +14,7 @@ contract Staker {
     uint256 public deadline = block.timestamp + 30 seconds;
     bool openForWithdraw;
 
-    constructor(address exampleExternalContractAddress) public {
+    constructor(address exampleExternalContractAddress) {
         exampleExternalContract = ExampleExternalContract(exampleExternalContractAddress);
     }
 
@@ -23,7 +23,7 @@ contract Staker {
 
         balances[_sender] += _amount;
 
-        console.log('new balance: %s', balances[_sender]);
+        console.log('/**/ new balance: %s /**/', balances[_sender]);
     }
 
     receive() external payable {

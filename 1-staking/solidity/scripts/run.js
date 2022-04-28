@@ -1,5 +1,5 @@
 const main = async () => {
-  const [owner, addr1, addr2] = await ethers.getSigners();
+  const [owner] = await ethers.getSigners();
 
   const exampleFactory = await hre.ethers.getContractFactory('ExampleExternalContract');
   const exampleContract = await exampleFactory.deploy();
@@ -11,19 +11,20 @@ const main = async () => {
 
   console.log("Contract deployed to:", stakerContract.address);
 
-
-  const params = [{
-    from: addr1,
-    to: stakerContract.address,
-    value: ethers.utils.parseEther("1") // 1 ether
-  }];
-
-  let txn = await hre.network.provider.send('eth_sendTransaction', params);
-  await txn.wait();
-
+  // balance before txn
   let contractBalance = await hre.ethers.provider.getBalance(stakerContract.address);
   console.log("Contract balance:", hre.ethers.utils.formatEther(contractBalance));
 
+  // new txn to send eth to contract
+  const txn = await owner.sendTransaction({
+    to: stakerContract.address,
+    value: ethers.utils.parseEther("1.0"),
+  });
+  await txn.wait();
+
+  // balance after txn
+  contractBalance = await hre.ethers.provider.getBalance(stakerContract.address);
+  console.log("Contract balance:", hre.ethers.utils.formatEther(contractBalance));
 };
 
 const runMain = async () => {

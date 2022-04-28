@@ -52,8 +52,6 @@ function App() {
 
   const stake = () => {};
 
-  const execute = () => {};
-
   useEffect(() => {}, []);
 
   return (
