@@ -6,6 +6,7 @@ import abi from "./utils/Staker.json"
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [contractBalance, setContractBalance] = useState("0");
+  const [userBalances, setUserBalances] = useState({});
   const contractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";
   const contractABI = abi.abi;
 
@@ -21,6 +22,8 @@ function App() {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       console.log("Connected!", accounts[0]);
       setCurrentAccount(accounts[0]);
+      
+      getBalance();
 
     } catch (error) {
       console.log(error);
@@ -35,9 +38,8 @@ function App() {
 
   const renderConnected = () => (
     <div>
-      <p className='info-text'>Time remaining: </p>
       <p className='info-text'>Total staked: {contractBalance}</p>
-      <p className='info-text'>You staked: 0.000 eth</p>
+      <p className='info-text'>You staked: </p>
 
       <div className="button-container"> 
         <button onClick={stake} className="cta-button connect-wallet-button">
@@ -88,11 +90,21 @@ function App() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const stakeContract = new ethers.Contract(contractAddress, contractABI, signer);
-        console.log(stakeContract);
         // balance before txn
         const balance = await provider.getBalance(stakeContract.address);
         console.log("Contract balance:", ethers.utils.formatEther(balance));
         setContractBalance(ethers.utils.formatEther(balance));
+
+        const addr = await signer.getAddress()
+        const usrBalance = await stakeContract.balances(addr)
+        const update = { addr : ethers.utils.formatEther(usrBalance)}
+        setUserBalances(userBalances =>({
+          ...userBalances,
+          ...update
+        }))
+        console.log('updated userBalances:',userBalances)
+        console.log(ethers.utils.formatEther(usrBalance))
+
       } else {
         console.log("Eth object doesn't exist!");
       }
@@ -101,7 +113,9 @@ function App() {
     }
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getBalance();
+  }, []);
 
   return (
     <div className="App">
